@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ block.super }} {{document.title}}{% endblock %}
+
+{% block content %}
+<strong>{{document.title}}</strong>
+<p>{{document.text}}</p>
+<p>Creator: {{document.author}}  <br/>Source: {{document.source.name}}</p>
+<br/>
+<p>Created: {{document.created}}</p>
+
+<p>Edited {{document.edited_times}} times</p>
+{% if document.edited_times > 0 %}
+<p>Last edit: {{document.updated}}</p>
+{% endif %}
+{% if document.editable and document.author == request.user %}
+<p><a href="{% url 'document:edit' document.pk %}">Edit</a></p>
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if user.is_authenticated %}
+  Hi {{ user.username }}!
+  <p><a href="{% url 'logout' %}">logout</a></p>
+  <p><a href="{% url 'document:create' %}">Create new document</a></p>
+  
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">login</a>
+{% endif %}
+<p><a href="{% url 'document:list' %}">Show all documents</a></p>
+
+{% endblock %}
