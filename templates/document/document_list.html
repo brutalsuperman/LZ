@@ -1,18 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<form action="" method="GET">
-       <input type="text" name="q" />
-       <button type="submit">search</button>
-</form>
-
-{% for doc in document_list %}
 <div>
-	<a href="{{doc.get_absolute_url}}">{{doc.title}}</a>
-	<p>{{doc.text}}</p>
-	<p>Creator: {{doc.author}}  <br/>Source: {{doc.source.name}}</p>
+	<form action="" method="GET">
+		   <label>Search by title</label>
+	       <input type="text" name="title" />
+
+		   
+	       <label>Search by author username</label>
+	       <input type="text" name="author" />
+
+	       <label>Create date</label>
+	       <input type="date" name="created"
+       			value="2019-01-29"
+       			min="2019-01-01" max="2019-12-31">
+	       <p>
+		   
+	       <label>Search by text</label>
+	       <input type="text" name="text" />
+
+		   <label>Search by source name</label>
+	       <input type="text" name="source" />
+
+	       <label>Edit date</label>
+	       <input type="date" name="updated"
+       			value="2019-01-29"
+       			min="2019-01-01" max="2019-12-31">
+
+	       <button type="submit">search</button>
+	</form>
+</div>
+
+<form action="{% url 'document:json_docs' %}" method='GET'>
+	{% for doc in document_list %}
+	<div>
+		<input type="checkbox" name="checks" value="{{doc.id}}" />
+		<a href="{{doc.get_absolute_url}}">{{doc.title}}</a>
+		<p>{{doc.text}}</p>
+		<p>Creator: {{doc.author}}  <br/>Source: {{doc.source.name}}</p>
+	</div>
 	{% endfor %}
-	<a href="{% url 'document:create' %}">Add new doc</a>
+		<a href="{% url 'document:create' %}">Add new doc</a>
+		<br><button type="submit">Generate json</button>
+	</form>
 </div>
 {% endblock %}

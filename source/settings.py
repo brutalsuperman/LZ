@@ -112,7 +112,7 @@ TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
@@ -126,3 +126,5 @@ AUTH_USER_MODEL = 'account.Profile'
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+DATETIME_FORMAT = 'Y-m-d H:i'

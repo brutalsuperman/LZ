@@ -3,7 +3,9 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView
 from .models import Document
 from .forms import DocumentModelForm
 from django.urls import reverse
-from django.db.models import Q
+# from django.db.models import Q
+from datetime import datetime
+from django.http import JsonResponse
 
 
 class DocumentCreateView(LoginRequiredMixin, CreateView):
@@ -22,13 +24,27 @@ class DocumentListView(ListView):
 
     def get_queryset(self):
         queryset = super(DocumentListView, self).get_queryset()
-        q = self.request.GET.get('q')
-        if q:
-            return queryset.filter(
-                Q(title__icontains=q) |
-                Q(text__icontains=q) |
-                Q(author__username__icontains=q) |
-                Q(source__name__icontains=q))
+        text = self.request.GET.get('text')
+        title = self.request.GET.get('title')
+        author = self.request.GET.get('author')
+        source = self.request.GET.get('source')
+        create = self.request.GET.get('created')
+        update = self.request.GET.get('update')
+        print(self.request.GET.getlist('checks'))
+        if text:
+            queryset = queryset.filter(text__icontains=text)
+        if title:
+            queryset = queryset.filter(title__icontains=title)
+        if author:
+            queryset = queryset.filter(author__username__icontains=author)
+        if source:
+            queryset = queryset.filter(source__name__icontains=source)
+        if create:
+            created = datetime.strptime(create, '%Y-%m-%d')
+            queryset = queryset.filter(created__date=created)
+        if update:
+            updated = datetime.strptime(update, '%Y-%m-%d')
+            queryset = queryset.filter(update__date=updated)
         return queryset
 
 
@@ -52,3 +68,11 @@ class DocumentUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('document:detail', kwargs={'pk': self.object.pk})
+
+
+def json_docs(request):
+    if request.GET:
+        documents = Document.objects.filter(id__in=request.GET.getlist('checks')).values()
+        data = list(documents)
+        return JsonResponse(data, safe=False)
+

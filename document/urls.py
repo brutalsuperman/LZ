@@ -20,4 +20,5 @@ urlpatterns = [
         view=DocumentUpdateView.as_view(),
         name='edit'
     ),
+    url(r'json_docs', json_docs, name='json_docs'),
 ]
