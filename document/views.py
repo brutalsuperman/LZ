@@ -31,7 +31,6 @@ class DocumentListView(ListView):
         source = self.request.GET.get('source')
         create = self.request.GET.get('created')
         update = self.request.GET.get('update')
-        print(self.request.GET.getlist('checks'))
         if text:
             queryset = queryset.filter(text__icontains=text)
         if title:
