@@ -40,7 +40,9 @@
 		<p>Creator: {{doc.author}}  <br/>Source: {{doc.source.name}}</p>
 	</div>
 	{% endfor %}
-		<a href="{% url 'document:create' %}">Add new doc</a>
+		<label>Download file</label>
+		<input type="checkbox" name="to_file" value="True" />
+		<br><a href="{% url 'document:create' %}">Add new doc</a>
 		<br><button type="submit">Generate json</button>
 	</form>
 </div>

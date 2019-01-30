@@ -6,6 +6,7 @@ from django.urls import reverse
 # from django.db.models import Q
 from datetime import datetime
 from django.http import JsonResponse
+from .tasks import download_selected_documents_task
 
 
 class DocumentCreateView(LoginRequiredMixin, CreateView):
@@ -74,5 +75,7 @@ def json_docs(request):
     if request.GET:
         documents = Document.objects.filter(id__in=request.GET.getlist('checks')).values()
         data = list(documents)
+        if request.GET.get('to_file'):
+            download_selected_documents_task.delay(data)
         return JsonResponse(data, safe=False)
 
